@@ -17,7 +17,7 @@ from pathlib import Path
 from functools import partial
 import random
 import string
-from PySide6.QtWidgets import QPushButton, QLineEdit
+from PySide6.QtWidgets import QPushButton, QLineEdit, QVBoxLayout
 
 from PySide6 import QtCore, QtGui, QtWidgets
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -261,9 +261,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.entries = []
         self._show_passwords = False
         self._stay_on_top = False  # Track stay on top state
-        self.generate_btn = QtWidgets.QPushButton("Generate Ultra-Strong Password")
-        self.generate_btn.clicked.connect(self.generate_strong_password)
+        self.generate_btn = QPushButton("Generate Ultra-Strong Password")
         self.layout.addWidget(self.generate_btn)
+        self.password_output = QLineEdit()
+        self.layout.addWidget(self.password_output)
+        self.setLayout(self.layout)
         self.password_output = QLineEdit()
         self.password_output.setReadOnly(True)
         self.layout.addWidget(self.password_output)
