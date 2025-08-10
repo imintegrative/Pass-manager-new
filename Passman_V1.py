@@ -15,6 +15,8 @@
 import sys, os, json, time, traceback, base64, re, shutil
 from pathlib import Path
 from functools import partial
+import random
+import string
 
 from PySide6 import QtCore, QtGui, QtWidgets
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -243,6 +245,11 @@ class EntryDialog(QtWidgets.QDialog):
 
 # ---------------- Main Window ----------------
 class MainWindow(QtWidgets.QMainWindow):
+    def generate_strong_password(self, length=24):
+        chars = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(random.SystemRandom().choice(chars) for _ in range(length))
+        self.password_output.setText(password)
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle(APPNAME)
@@ -253,6 +260,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.entries = []
         self._show_passwords = False
         self._stay_on_top = False  # Track stay on top state
+        self.generate_btn = QPushButton("Generate Ultra-Strong Password")
+        self.generate_btn.clicked.connect(self.generate_strong_password)
+        self.layout.addWidget(self.generate_btn)
+        self.password_output = QLineEdit()
+        self.password_output.setReadOnly(True)
+        self.layout.addWidget(self.password_output)
 
         # Frameless but keep native window shadow: remove native title bar
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint)
