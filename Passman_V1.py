@@ -467,6 +467,21 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Add container to root layout
         root.addWidget(container)
+        
+
+        gen_box = QtWidgets.QHBoxLayout()
+        
+        self.generate_btn = QtWidgets.QPushButton("Generate Ultra-Strong Password")
+        self.generate_btn.clicked.connect(self.generate_strong_password)
+        gen_box.addWidget(self.generate_btn)
+        
+        self.password_output = QtWidgets.QLineEdit()
+        self.password_output.setReadOnly(True)
+        gen_box.addWidget(self.password_output)
+
+
+        root.addLayout(gen_box)
+
 
         # status bar
         self.status = QtWidgets.QStatusBar()
