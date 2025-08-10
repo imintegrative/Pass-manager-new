@@ -257,15 +257,27 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(980, 620)
         self.central = QtWidgets.QWidget()
         self.setCentralWidget(self.central)
+        # Create a new layout and set it on central widget
+        container_layout = QtWidgets.QVBoxLayout()
+        
+        # Add "Generate Ultra-Strong Password" button
+        self.generate_btn = QtWidgets.QPushButton("Generate Ultra-Strong Password")
+        self.generate_btn.clicked.connect(self.generate_strong_password)
+        container_layout.addWidget(self.generate_btn)
+        
+        # Add output field to display password
+        self.password_output = QtWidgets.QLineEdit()
+        self.password_output.setReadOnly(True)
+        container_layout.addWidget(self.password_output)
+        
+        # Apply the layout to central widget
+        self.central.setLayout(container_layout)
+        self.layout = QtWidgets.QVBoxLayout(self.central)
         self.key = None
         self.entries = []
         self._show_passwords = False
         self._stay_on_top = False  # Track stay on top state
-        self.generate_btn = QPushButton("Generate Ultra-Strong Password")
-        self.layout.addWidget(self.generate_btn)
-        self.password_output = QLineEdit()
-        self.layout.addWidget(self.password_output)
-        self.setLayout(self.layout)
+        
         self.password_output = QLineEdit()
         self.password_output.setReadOnly(True)
         self.layout.addWidget(self.password_output)
