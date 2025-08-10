@@ -15,9 +15,6 @@
 import sys, os, json, time, traceback, base64, re, shutil
 from pathlib import Path
 from functools import partial
-import random
-import string
-from PySide6.QtWidgets import QPushButton, QLineEdit, QVBoxLayout
 
 from PySide6 import QtCore, QtGui, QtWidgets
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -246,41 +243,16 @@ class EntryDialog(QtWidgets.QDialog):
 
 # ---------------- Main Window ----------------
 class MainWindow(QtWidgets.QMainWindow):
-    def generate_strong_password(self, length=24):
-        chars = string.ascii_letters + string.digits + string.punctuation
-        password = ''.join(random.SystemRandom().choice(chars) for _ in range(length))
-        self.password_output.setText(password)
-
     def __init__(self):
         super().__init__()
         self.setWindowTitle(APPNAME)
         self.resize(980, 620)
         self.central = QtWidgets.QWidget()
         self.setCentralWidget(self.central)
-        # Create a new layout and set it on central widget
-        container_layout = QtWidgets.QVBoxLayout()
-        
-        # Add "Generate Ultra-Strong Password" button
-        self.generate_btn = QtWidgets.QPushButton("Generate Ultra-Strong Password")
-        self.generate_btn.clicked.connect(self.generate_strong_password)
-        container_layout.addWidget(self.generate_btn)
-        
-        # Add output field to display password
-        self.password_output = QtWidgets.QLineEdit()
-        self.password_output.setReadOnly(True)
-        container_layout.addWidget(self.password_output)
-        
-        # Apply the layout to central widget
-        self.central.setLayout(container_layout)
-        self.layout = QtWidgets.QVBoxLayout(self.central)
         self.key = None
         self.entries = []
         self._show_passwords = False
         self._stay_on_top = False  # Track stay on top state
-        
-        self.password_output = QLineEdit()
-        self.password_output.setReadOnly(True)
-        self.layout.addWidget(self.password_output)
 
         # Frameless but keep native window shadow: remove native title bar
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint)
@@ -467,21 +439,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Add container to root layout
         root.addWidget(container)
-        
-
-        gen_box = QtWidgets.QHBoxLayout()
-        
-        self.generate_btn = QtWidgets.QPushButton("Generate Ultra-Strong Password")
-        self.generate_btn.clicked.connect(self.generate_strong_password)
-        gen_box.addWidget(self.generate_btn)
-        
-        self.password_output = QtWidgets.QLineEdit()
-        self.password_output.setReadOnly(True)
-        gen_box.addWidget(self.password_output)
-
-
-        root.addLayout(gen_box)
-
 
         # status bar
         self.status = QtWidgets.QStatusBar()
